@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+
+/// نگاشت کلید آیکن (ذخیره‌شده در props) به IconData. باید با kIconKeys در domain هماهنگ باشد.
+const kIconData = <String, IconData>{
+  'home': Icons.home,
+  'search': Icons.search,
+  'person': Icons.person,
+  'settings': Icons.settings,
+  'cart': Icons.shopping_cart,
+  'favorite': Icons.favorite,
+  'menu': Icons.menu,
+  'notifications': Icons.notifications,
+  'add': Icons.add,
+  'star': Icons.star,
+  'phone': Icons.phone,
+  'info': Icons.info,
+  'close': Icons.close,
+  'check': Icons.check,
+  'arrow_back': Icons.arrow_back,
+  'arrow_forward': Icons.arrow_forward,
+  'arrow_down': Icons.keyboard_arrow_down,
+  'share': Icons.share,
+  'edit': Icons.edit,
+  'delete': Icons.delete,
+  'email': Icons.email,
+  'lock': Icons.lock,
+  'location': Icons.location_on,
+  'camera': Icons.camera_alt,
+  'image': Icons.image,
+  'play': Icons.play_arrow,
+  'filter': Icons.filter_list,
+  'calendar': Icons.calendar_today,
+  'chat': Icons.chat,
+  'bookmark': Icons.bookmark,
+  'visibility': Icons.visibility,
+  'more': Icons.more_vert,
+  'logout': Icons.logout,
+  'wallet': Icons.account_balance_wallet,
+  'tag': Icons.local_offer,
+};
+
+/// آیکن نمایشی هر نوع ویجت در لیست افزودن و نمایشگاه
+const kTypeIcons = <String, IconData>{
+  'appBar': Icons.web_asset,
+  'footer': Icons.call_to_action,
+  'navItem': Icons.tab,
+  'column': Icons.view_agenda,
+  'row': Icons.view_column,
+  'stack': Icons.layers,
+  'container': Icons.crop_square,
+  'card': Icons.credit_card,
+  'text': Icons.text_fields,
+  'textField': Icons.input,
+  'icon': Icons.emoji_symbols,
+  'svg': Icons.draw,
+  'button': Icons.smart_button,
+  'image': Icons.image,
+};
+
+IconData iconForType(String type) => kTypeIcons[type] ?? Icons.widgets;
