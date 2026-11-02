@@ -5,13 +5,16 @@ import '../../domain/usecases/template_usecases.dart';
 
 /// وضعیت کتابخانه‌ی قالب‌های کاربر
 class TemplatesController extends GetxController {
-  final GetTemplates _get;
-  final SaveTemplate _save;
-  final DeleteTemplate _delete;
-  final ExportTemplates _export;
-  final ImportTemplates _import;
-  TemplatesController(this._get, this._save, this._delete, this._export, this._import);
+  // usecaseها (از injection.dart تزریق می‌شوند)
+  final GetTemplates _getTemplates;
+  final SaveTemplate _saveTemplate;
+  final DeleteTemplate _deleteTemplate;
+  final ExportTemplates _exportTemplates;
+  final ImportTemplates _importTemplates;
+  TemplatesController(
+      this._getTemplates, this._saveTemplate, this._deleteTemplate, this._exportTemplates, this._importTemplates);
 
+  /// فهرست قالب‌های کاربر (واکنشی)
   final items = <Template>[].obs;
 
   @override
@@ -20,24 +23,28 @@ class TemplatesController extends GetxController {
     load();
   }
 
-  Future<void> load() async => items.assignAll(await _get());
+  /// فهرست را از ذخیره‌سازی دوباره می‌خواند
+  Future<void> load() async => items.assignAll(await _getTemplates());
 
+  /// یک ویجت را با این نام به‌عنوان قالب ذخیره می‌کند
   Future<void> saveFromNode(String name, WidgetNode node) async {
-    await _save(name, node);
+    await _saveTemplate(name, node);
     await load();
   }
 
+  /// یک قالب را حذف می‌کند
   Future<void> remove(String id) async {
-    await _delete(id);
+    await _deleteTemplate(id);
     await load();
   }
 
-  Future<String> exportJson() => _export();
+  /// همه‌ی قالب‌ها به‌صورت متن JSON
+  Future<String> exportJson() => _exportTemplates();
 
   /// می‌تواند استثنا بدهد (JSON نامعتبر)
   Future<int> importJson(String json) async {
-    final n = await _import(json);
+    final importedCount = await _importTemplates(json);
     await load();
-    return n;
+    return importedCount;
   }
 }

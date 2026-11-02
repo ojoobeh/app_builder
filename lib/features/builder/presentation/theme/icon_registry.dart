@@ -41,6 +41,10 @@ const kIconData = <String, IconData>{
 
 /// آیکن نمایشی هر نوع ویجت در لیست افزودن و نمایشگاه
 const kTypeIcons = <String, IconData>{
+  'tabs': Icons.tab,
+  'tabItem': Icons.tab_unselected,
+  'checkbox': Icons.check_box,
+  'radio': Icons.radio_button_checked,
   'appBar': Icons.web_asset,
   'footer': Icons.call_to_action,
   'navItem': Icons.tab,
@@ -55,6 +59,7 @@ const kTypeIcons = <String, IconData>{
   'svg': Icons.draw,
   'button': Icons.smart_button,
   'image': Icons.image,
+  'dataList': Icons.list_alt,
 };
 
 IconData iconForType(String type) => kTypeIcons[type] ?? Icons.widgets;

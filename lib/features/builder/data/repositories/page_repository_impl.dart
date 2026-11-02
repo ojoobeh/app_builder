@@ -5,18 +5,33 @@ import '../datasources/hive_local_datasource.dart';
 import '../mappers/json_mappers.dart';
 
 class PageRepositoryImpl implements PageRepository {
-  final HiveLocalDataSource _ds;
-  PageRepositoryImpl(this._ds);
+  /// منبع داده‌ی محلی (Hive)
+  final HiveLocalDataSource _dataSource;
+  PageRepositoryImpl(this._dataSource);
 
-  @override
-  Future<List<PageModel>> getAll() async => _ds
+  /// همه‌ی صفحه‌های ذخیره‌شده (از همه‌ی پروژه‌ها)
+  List<PageModel> _all() => _dataSource
       .allPages()
-      .map((s) => pageFromJson(Map<String, dynamic>.from(jsonDecode(s) as Map)))
+      .map((jsonText) => pageFromJson(Map<String, dynamic>.from(jsonDecode(jsonText) as Map)))
       .toList();
 
   @override
-  Future<void> save(PageModel page) => _ds.putPage(page.id, jsonEncode(pageToJson(page)));
+  Future<List<PageModel>> getByProject(String projectId) async {
+    final pages = _all().where((page) => page.projectId == projectId).toList();
+    pages.sort((a, b) => a.id.compareTo(b.id)); // شناسه زمان ساخت است؛ ترتیب ساخت
+    return pages;
+  }
 
   @override
-  Future<void> delete(String id) => _ds.deletePage(id);
+  Future<void> save(PageModel page) => _dataSource.putPage(page.id, jsonEncode(pageToJson(page)));
+
+  @override
+  Future<void> delete(String id) => _dataSource.deletePage(id);
+
+  @override
+  Future<void> deleteByProject(String projectId) async {
+    for (final page in _all().where((page) => page.projectId == projectId)) {
+      await _dataSource.deletePage(page.id);
+    }
+  }
 }

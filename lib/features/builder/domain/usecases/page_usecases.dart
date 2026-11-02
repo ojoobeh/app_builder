@@ -2,21 +2,23 @@ import '../entities/page_model.dart';
 import '../catalog/widget_catalog.dart';
 import '../repositories/page_repository.dart';
 
-class GetPages {
+/// صفحه‌های یک پروژه
+class GetProjectPages {
   final PageRepository _repo;
-  const GetPages(this._repo);
-  Future<List<PageModel>> call() => _repo.getAll();
+  const GetProjectPages(this._repo);
+  Future<List<PageModel>> call(String projectId) => _repo.getByProject(projectId);
 }
 
-/// ساخت صفحه‌ی جدید با اپ‌بار، بدنه (Column) و فوتر پیش‌فرض
+/// ساخت صفحه‌ی جدید در یک پروژه با اپ‌بار، بدنه (Column) و فوتر پیش‌فرض
 class CreatePage {
   final PageRepository _repo;
   const CreatePage(this._repo);
 
-  Future<PageModel> call(String name) async {
+  Future<PageModel> call(String projectId, String name) async {
     final page = PageModel(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
       name: name,
+      projectId: projectId,
       appBar: WidgetCatalog.create('appBar')..props['title'] = name,
       body: WidgetCatalog.create('column'),
       footer: WidgetCatalog.create('footer'),

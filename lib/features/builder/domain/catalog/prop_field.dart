@@ -1,4 +1,6 @@
-enum PropType { text, number, color, boolean, option, icon }
+/// نوع یک ویژگی؛ تعیین می‌کند در پنل ویژگی‌ها با چه ابزاری ویرایش شود
+/// text = فیلد متنی | number = عددی | color = پالت رنگ | boolean = روشن/خاموش | option = منوی گزینه‌ها | icon = انتخاب آیکن | page = انتخاب یکی از صفحه‌های پروژه (مقدار = شناسه‌ی صفحه)
+enum PropType { text, number, color, boolean, option, icon, page }
 
 /// توضیح یک ویژگی قابل‌ویرایش (کلید، برچسب، نوع)
 class PropField {

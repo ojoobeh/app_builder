@@ -2,13 +2,21 @@ import '../widget_def.dart';
 import '../prop_field.dart';
 
 /// تعریف ویجت «image»
+///
+/// ویژگی‌ها (کلید در props ← معنی):
+///  • url: آدرس تصویر
+///  • mode: fixed (اندازه‌ی ثابت) / banner (تمام‌عرض با نسبت ثابت)
+///  • ratio: نسبت عرض÷ارتفاع در حالت بنر (۱٫۷۸ = 16:9)
+///  • width / height: اندازه در حالت ثابت (۰ = خودکار)
+///  • rTL / rTR / rBL / rBR: گردی هر چهار گوشه
+/// علاوه بر این، هر ویجتی می‌تواند flex (Expanded) داشته باشد.
 final imageDef = WidgetDef('image', 'تصویر (URL)',
     defaults: {
       'variant': 'fixed', 'url': 'https://picsum.photos/600/340', 'mode': 'fixed', 'ratio': 1.78,
       'width': 0.0, 'height': 150.0, 'rTL': 0.0, 'rTR': 0.0, 'rBL': 0.0, 'rBR': 0.0
     },
     fields: [
-      PropField('url', 'آدرس تصویر', PropType.text),
+      PropField('url', 'آدرس تصویر (می‌تواند binding باشد: {{item.image}})', PropType.text),
       PropField('mode', 'حالت (fixed ثابت / banner تمام‌عرض)', PropType.option, options: ['fixed', 'banner']),
       PropField('ratio', 'نسبت عرض÷ارتفاع در بنر (16:9 = 1.78، 4:3 = 1.33)', PropType.number),
       PropField('width', 'عرض (حالت ثابت، ۰ = خودکار)', PropType.number),

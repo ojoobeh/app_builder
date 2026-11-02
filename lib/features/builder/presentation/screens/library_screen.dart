@@ -11,7 +11,7 @@ class LibraryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final c = Get.find<TemplatesController>();
+    final templates = Get.find<TemplatesController>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('کتابخانه‌ی من'),
@@ -20,14 +20,14 @@ class LibraryScreen extends StatelessWidget {
             tooltip: 'کپی همه (JSON)',
             icon: const Icon(Icons.upload),
             onPressed: () async {
-              await Clipboard.setData(ClipboardData(text: await c.exportJson()));
+              await Clipboard.setData(ClipboardData(text: await templates.exportJson()));
               Get.snackbar('کپی شد', 'JSON همه‌ی قالب‌ها در کلیپ‌بورد است.');
             },
           ),
-          IconButton(tooltip: 'وارد کردن از کلیپ‌بورد', icon: const Icon(Icons.download), onPressed: () => _import(c)),
+          IconButton(tooltip: 'وارد کردن از کلیپ‌بورد', icon: const Icon(Icons.download), onPressed: () => _importFromClipboard(templates)),
         ],
       ),
-      body: Obx(() => c.items.isEmpty
+      body: Obx(() => templates.items.isEmpty
           ? const Center(
               child: Padding(
                 padding: EdgeInsets.all(24),
@@ -36,21 +36,25 @@ class LibraryScreen extends StatelessWidget {
               ),
             )
           : ListView(children: [
-              for (final t in c.items)
+              for (final template in templates.items)
                 ListTile(
-                  title: Text('${t.name}  (${WidgetCatalog.of(t.node.type).label})'),
-                  subtitle: templatePreview(t.node),
-                  trailing: IconButton(icon: const Icon(Icons.delete_outline), onPressed: () => c.remove(t.id)),
+                  title: Text('${template.name}  (${WidgetCatalog.of(template.node.type).label})'),
+                  subtitle: templatePreview(template.node), // پیش‌نمایش قالب
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete_outline),
+                    onPressed: () => templates.remove(template.id),
+                  ),
                 ),
             ])),
     );
   }
 
-  Future<void> _import(TemplatesController c) async {
-    final d = await Clipboard.getData(Clipboard.kTextPlain);
+  /// JSON موجود در کلیپ‌بورد را به‌عنوان قالب وارد می‌کند
+  Future<void> _importFromClipboard(TemplatesController templates) async {
+    final clipboard = await Clipboard.getData(Clipboard.kTextPlain);
     try {
-      final n = await c.importJson(d?.text ?? '');
-      Get.snackbar('انجام شد', '$n قالب وارد شد.');
+      final importedCount = await templates.importJson(clipboard?.text ?? '');
+      Get.snackbar('انجام شد', '$importedCount قالب وارد شد.');
     } catch (_) {
       Get.snackbar('خطا', 'محتوای کلیپ‌بورد، JSON معتبر قالب نیست.');
     }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../features/builder/presentation/screens/home_screen.dart';
+import '../features/builder/presentation/screens/projects_screen.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -11,7 +11,7 @@ class App extends StatelessWidget {
       title: 'Page Builder',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(useMaterial3: true, colorSchemeSeed: Colors.indigo),
-      home: const HomeScreen(),
+      home: const ProjectsScreen(),
     );
   }
 }

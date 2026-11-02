@@ -2,6 +2,16 @@ import '../widget_def.dart';
 import '../prop_field.dart';
 
 /// تعریف ویجت «card»
+///
+/// ویژگی‌ها (کلید در props ← معنی):
+///  • bg: رنگ
+///  • radius: گردی گوشه
+///  • width / height: اندازه (۰ = خودکار)
+///  • padding / margin: فاصله‌ی داخلی / بیرونی
+///  • borderColor / borderWidth: رنگ و ضخامت بردر (ضخامت ۰ = بدون بردر)
+///  • elevation / shadowColor: شدت و رنگ سایه (۰ = بدون سایه)
+///  • clip: برش محتوا با گوشه‌های گرد
+/// علاوه بر این، هر ویجتی می‌تواند flex (Expanded) داشته باشد.
 final cardDef = WidgetDef('card', 'کارت (Card)', container: true,
     defaults: {
       'variant': 'plain', 'bg': 0xFFFFFFFF, 'radius': 12.0, 'width': 0.0, 'height': 0.0,

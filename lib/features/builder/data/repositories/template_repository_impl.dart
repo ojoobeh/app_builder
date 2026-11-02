@@ -5,30 +5,32 @@ import '../datasources/hive_local_datasource.dart';
 import '../mappers/json_mappers.dart';
 
 class TemplateRepositoryImpl implements TemplateRepository {
-  final HiveLocalDataSource _ds;
-  TemplateRepositoryImpl(this._ds);
+  /// منبع داده‌ی محلی (Hive)
+  final HiveLocalDataSource _dataSource;
+  TemplateRepositoryImpl(this._dataSource);
 
   @override
-  Future<List<Template>> getAll() async => _ds
+  Future<List<Template>> getAll() async => _dataSource
       .allTemplates()
-      .map((s) => templateFromJson(Map<String, dynamic>.from(jsonDecode(s) as Map)))
+      .map((jsonText) => templateFromJson(Map<String, dynamic>.from(jsonDecode(jsonText) as Map)))
       .toList();
 
   @override
-  Future<void> save(Template t) => _ds.putTemplate(t.id, jsonEncode(templateToJson(t)));
+  Future<void> save(Template template) =>
+      _dataSource.putTemplate(template.id, jsonEncode(templateToJson(template)));
 
   @override
-  Future<void> delete(String id) => _ds.deleteTemplate(id);
+  Future<void> delete(String id) => _dataSource.deleteTemplate(id);
 
   @override
   Future<String> exportJson() async => jsonEncode((await getAll()).map(templateToJson).toList());
 
   @override
   Future<int> importJson(String json) async {
-    final list = jsonDecode(json) as List; // اگر JSON نامعتبر باشد استثنا می‌دهد
-    for (final e in list) {
-      await save(templateFromJson(Map<String, dynamic>.from(e as Map)));
+    final entries = jsonDecode(json) as List; // اگر JSON نامعتبر باشد استثنا می‌دهد
+    for (final entry in entries) {
+      await save(templateFromJson(Map<String, dynamic>.from(entry as Map)));
     }
-    return list.length;
+    return entries.length;
   }
 }
